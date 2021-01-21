@@ -1,0 +1,7 @@
+name: EssentialsS
+main: com.salkcoding.essentialss.EssentialsS
+version: 1.0.0-SNAPSHOT
+description: Essentials by Salk_Coding
+api-version: 1.16
+author: Salk_Coding
+depend: [ KotlinBukkitAPI ]
