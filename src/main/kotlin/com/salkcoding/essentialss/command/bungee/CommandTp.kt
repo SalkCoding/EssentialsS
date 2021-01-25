@@ -1,12 +1,21 @@
 package com.salkcoding.essentialss.command.bungee
 
+import com.salkcoding.essentialss.bukkitLinkedAPI
+import com.salkcoding.essentialss.bungeeApi
 import com.salkcoding.essentialss.essentials
 import com.salkcoding.essentialss.util.errorFormat
+import com.salkcoding.essentialss.util.infoFormat
+import com.salkcoding.essentialss.util.teleport
+import me.baiks.bukkitlinked.api.TeleportResult
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import java.io.ByteArrayOutputStream
+import java.io.DataOutputStream
+import java.io.IOException
 
 class CommandTp : CommandExecutor {
 
@@ -23,49 +32,54 @@ class CommandTp : CommandExecutor {
                     essentials.logger.warning("Player only command")
                     return true
                 }
-
-                val targetPlayer = Bukkit.getPlayer(args[0])
+                val targetName = args[0]
+                val targetPlayer = Bukkit.getPlayer(targetName)
                 if (targetPlayer != null) {
                     player.teleportAsync(targetPlayer.location)
                 } else {
-                    //TODO Bungee
-                    player.sendMessage("존재하지 않는 플레이어입니다.".errorFormat())
+                    bukkitLinkedAPI.teleport(player, targetName)
                     return true
                 }
             }
             2 -> {
-                //TODO bungee(Have to consider...)
-                val fromPlayer = Bukkit.getPlayer(args[0])
-                if (fromPlayer == null) {
-                    sender.sendMessage("존재하지 않는 플레이어입니다.".errorFormat())
-                    return true
-                }
+                val fromName = args[0]
+                val toName = args[1]
+                val fromPlayer = Bukkit.getPlayer(fromName)
+                val toPlayer = Bukkit.getPlayer(toName)
+                when {
+                    //Just teleport
+                    fromPlayer != null && toPlayer != null -> {
+                        fromPlayer.teleportAsync(toPlayer.location)
+                        fromPlayer.sendMessage("이동되었습니다.".infoFormat())
+                        toPlayer.sendMessage("이동되었습니다.".infoFormat())
+                        return true
+                    }
+                    //Have to use bungee
+                    fromPlayer != null && toPlayer == null -> {
+                        bukkitLinkedAPI.teleport(fromPlayer, toName)
+                    }
+                    else -> {
+                        val onlinePlayerList = bukkitLinkedAPI.onlinePlayersInfo
+                        val fromPlayerInfo = onlinePlayerList.find { it.playerName == fromName }
+                        val toPlayerInfo = onlinePlayerList.find { it.playerName == toName }
+                        if (fromPlayerInfo == null || toPlayerInfo == null) {
+                            sender.sendMessage("존재하지 않은 플레이어입니다.".errorFormat())
+                            return true
+                        }
 
-                val toPlayer = Bukkit.getPlayer(args[1])
-                if (toPlayer == null) {
-                    sender.sendMessage("존재하지 않는 플레이어입니다.".errorFormat())
-                    return true
+                        val messageBytes = ByteArrayOutputStream()
+                        val messageOut = DataOutputStream(messageBytes)
+                        try {
+                            messageOut.writeUTF(fromName)
+                            messageOut.writeUTF(toName)
+                        } catch (exception: IOException) {
+                            exception.printStackTrace()
+                        }
+                        bungeeApi.forward(fromPlayerInfo.serverName, "essentials-tp", messageBytes.toByteArray())
+                    }
                 }
-
-                fromPlayer.teleportAsync(toPlayer.location)
             }
         }
         return false
     }
 }
-
-/*
-        Bukkit.getScheduler().runTaskAsynchronously(essentials, Runnable {
-            val messageBytes = ByteArrayOutputStream()
-            val messageOut = DataOutputStream(messageBytes)
-            try {
-                messageOut.writeUTF(player.uniqueId.toString())
-                messageOut.writeUTF(player.name)
-                messageOut.writeUTF(tunaLands.serverName)
-            } catch (exception: IOException) {
-                exception.printStackTrace()
-            }
-
-            bungeeApi.forward("ALL", "tunalands-spawn", messageBytes.toByteArray())
-        })
-*/

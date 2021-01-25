@@ -1,5 +1,6 @@
-package com.salkcoding.essentialss.command.single
+package com.salkcoding.essentialss.command.bungee
 
+import com.salkcoding.essentialss.bukkitLinkedAPI
 import com.salkcoding.essentialss.util.errorFormat
 import com.salkcoding.essentialss.util.infoFormat
 import org.bukkit.Bukkit
@@ -20,6 +21,43 @@ class CommandSeen : CommandExecutor {
             1 -> {
                 val targetPlayer = Bukkit.getOfflinePlayerIfCached(args[0])
                 if (targetPlayer == null) {
+                    val playerInfo = bukkitLinkedAPI.getPlayerInfo(args[0])
+                    if (playerInfo != null) {
+                        val lastOnline = Calendar.getInstance()
+                        lastOnline.timeInMillis = playerInfo.lastOnline
+                        val updatedAt = Calendar.getInstance()
+                        updatedAt.timeInMillis = playerInfo.updatedAt
+                        sender.sendMessage("name: ${playerInfo.playerName}, UUID: ${playerInfo.playerUUID}".infoFormat())
+                        sender.sendMessage("     isOp: ${playerInfo.isOp}, isOnline: ${playerInfo.isOnline}")
+                        sender.sendMessage(
+                            "     lastOnline: ${
+                                lastOnline.get(Calendar.YEAR)
+                            }/${
+                                lastOnline.get(Calendar.MONTH) + 1
+                            }/${
+                                lastOnline.get(Calendar.DATE)
+                            } ${
+                                lastOnline.get(Calendar.HOUR_OF_DAY)
+                            }:${
+                                lastOnline.get(Calendar.MINUTE)
+                            }"
+                        )
+                        sender.sendMessage(
+                            "     updatedAt: ${
+                                updatedAt.get(Calendar.YEAR)
+                            }/${
+                                updatedAt.get(Calendar.MONTH) + 1
+                            }/${
+                                updatedAt.get(Calendar.DATE)
+                            } ${
+                                updatedAt.get(Calendar.HOUR_OF_DAY)
+                            }:${
+                                updatedAt.get(Calendar.MINUTE)
+                            }"
+                        )
+                        return true
+                    }
+
                     sender.sendMessage("존재하지 않는 플레이어입니다.".errorFormat())
                     return true
                 }

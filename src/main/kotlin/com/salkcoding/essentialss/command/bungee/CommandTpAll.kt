@@ -1,8 +1,10 @@
 package com.salkcoding.essentialss.command.bungee
 
+import com.salkcoding.essentialss.bukkitLinkedAPI
 import com.salkcoding.essentialss.essentials
 import com.salkcoding.essentialss.util.errorFormat
 import com.salkcoding.essentialss.util.infoFormat
+import me.baiks.bukkitlinked.api.TeleportResult
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -30,7 +32,11 @@ class CommandTpAll : CommandExecutor {
             }
         }
 
-        //TODO Bungee
+        bukkitLinkedAPI.onlinePlayersInfo.forEach {
+            val result = bukkitLinkedAPI.teleport(it.playerUUID, player.uniqueId)
+            if (result != TeleportResult.TELEPORT_STARTED)
+                essentials.logger.warning("Teleport failed, ${it.playerName}(${it.playerUUID}) -> ${player.name}(${player.uniqueId}), Result: $result")
+        }
 
         player.sendMessage("모든 서버의 유저를 텔레포트 시켰습니다.".infoFormat())
         return true

@@ -1,4 +1,4 @@
-package com.salkcoding.essentialss.command.bungee
+package com.salkcoding.essentialss.command.single
 
 import com.salkcoding.essentialss.essentials
 import com.salkcoding.essentialss.util.errorFormat

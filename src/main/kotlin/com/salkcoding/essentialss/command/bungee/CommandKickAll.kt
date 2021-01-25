@@ -1,13 +1,13 @@
 package com.salkcoding.essentialss.command.bungee
 
+import com.salkcoding.essentialss.bukkitLinkedAPI
 import com.salkcoding.essentialss.bungeeApi
-import com.salkcoding.essentialss.essentials
 import com.salkcoding.essentialss.util.errorFormat
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import java.util.concurrent.TimeUnit
 
 class CommandKickAll : CommandExecutor {
 
@@ -25,33 +25,23 @@ class CommandKickAll : CommandExecutor {
                     it.kickPlayer("관리자에의해 킥당하셨습니다.")
                 }
 
-                Bukkit.getScheduler().runTaskAsynchronously(essentials, Runnable {
-                    val playerListFuture = bungeeApi.getPlayerList("ALL")
-                    playerListFuture.get(10, TimeUnit.SECONDS).forEach {
-                        val offlinePlayer = Bukkit.getOfflinePlayerIfCached(it)
-                        if (offlinePlayer == null || !offlinePlayer.isOp) {
-                            bungeeApi.kickPlayer(it, "관리자에의해 킥당하셨습니다.")
-                        }
-                    }
-                })
+                bukkitLinkedAPI.onlinePlayersInfo.forEach {
+                    if (!it.isOp)
+                        bungeeApi.kickPlayer(it.playerName, "관리자에의해 킥당하셨습니다.")
+                }
             }
             else -> {
-                val message = args.joinToString(" ")
+                val message = ChatColor.translateAlternateColorCodes('&', args.joinToString(" "))
                 Bukkit.getOnlinePlayers().filter {
                     !it.isOp
                 }.forEach {
                     it.kickPlayer(message)
                 }
 
-                Bukkit.getScheduler().runTaskAsynchronously(essentials, Runnable {
-                    val playerListFuture = bungeeApi.getPlayerList("ALL")
-                    playerListFuture.get(10, TimeUnit.SECONDS).forEach {
-                        val offlinePlayer = Bukkit.getOfflinePlayerIfCached(it)
-                        if (offlinePlayer == null || !offlinePlayer.isOp) {
-                            bungeeApi.kickPlayer(it, message)
-                        }
-                    }
-                })
+                bukkitLinkedAPI.onlinePlayersInfo.forEach {
+                    if (!it.isOp)
+                        bungeeApi.kickPlayer(it.playerName, message)
+                }
             }
         }
 
