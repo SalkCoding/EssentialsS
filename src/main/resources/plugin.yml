@@ -5,3 +5,44 @@ description: Essentials by Salk_Coding
 api-version: 1.16
 author: Salk_Coding
 depend: [ KotlinBukkitAPI ]
+commands:
+  kickall:
+    description: kickall
+  list:
+    description: list
+  seen:
+    description: seen
+  tp:
+    description: tp
+  tpall:
+    description: tpall
+  tphere:
+    description: tphere
+  ci:
+    description: clear inventory
+    aliases: [clearinventory]
+  feed:
+    description: feed
+  fly:
+    description: fly
+  gamemode:
+    description: gamemode
+    aliases: [gm]
+  heal:
+    description: heal
+  killall:
+    description: killall
+  more:
+    description: more
+  near:
+    description: near
+  repair:
+    description: repair
+  top:
+    description: top
+  tppos:
+    description: tppos
+  tpwpos:
+    description: tpwpos
+  xp:
+    description: xp
