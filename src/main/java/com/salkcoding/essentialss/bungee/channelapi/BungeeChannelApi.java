@@ -5,7 +5,7 @@
  * Licensed under the MIT License. See LICENSE file in the project root for full license information.
  */
 
-package com.salkcoding.essentialss.bungee.chnnelapi;
+package com.salkcoding.essentialss.bungee.channelapi;
 
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataInput;

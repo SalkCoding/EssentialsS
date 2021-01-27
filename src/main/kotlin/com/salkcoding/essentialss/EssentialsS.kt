@@ -1,6 +1,6 @@
 package com.salkcoding.essentialss
 
-import com.salkcoding.essentialss.bungee.chnnelapi.BungeeChannelApi
+import com.salkcoding.essentialss.bungee.channelapi.BungeeChannelApi
 import com.salkcoding.essentialss.bungee.receiver.CommandReceiver
 import com.salkcoding.essentialss.command.bungee.*
 import com.salkcoding.essentialss.command.single.*
@@ -39,15 +39,23 @@ class EssentialsS : JavaPlugin() {
         getCommand("fly")!!.setExecutor(CommandFly())
         getCommand("gamemode")!!.setExecutor(CommandGameMode())
         getCommand("heal")!!.setExecutor(CommandHeal())
-        getCommand("killall")!!.setExecutor(CommandKillAll())
+        val killAll = CommandKillAll()
+        getCommand("killAll")!!.setExecutor(killAll)
+        getCommand("killAll")!!.tabCompleter = killAll
         getCommand("more")!!.setExecutor(CommandMore())
         getCommand("near")!!.setExecutor(CommandNear())
         getCommand("repair")!!.setExecutor(CommandRepair())
         getCommand("speed")!!.setExecutor(CommandSpeed())
         getCommand("top")!!.setExecutor(CommandTop())
-        getCommand("tppos")!!.setExecutor(CommandTpPos())
-        getCommand("tpwpos")!!.setExecutor(CommandTpwPos())
-        getCommand("xp")!!.setExecutor(CommandXp())
+        val tppos = CommandTpPos()
+        getCommand("tppos")!!.setExecutor(tppos)
+        getCommand("tppos")!!.tabCompleter = tppos
+        val tpwpos = CommandTpwPos()
+        getCommand("tpwpos")!!.setExecutor(tpwpos)
+        getCommand("tpwpos")!!.tabCompleter = tpwpos
+        val xp = CommandXp()
+        getCommand("xp")!!.setExecutor(xp)
+        getCommand("xp")!!.tabCompleter = xp
 
         logger.info("Plugin enabled")
     }

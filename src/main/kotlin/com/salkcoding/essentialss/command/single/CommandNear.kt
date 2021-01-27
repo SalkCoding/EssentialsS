@@ -5,13 +5,13 @@ import com.salkcoding.essentialss.util.errorFormat
 import com.salkcoding.essentialss.util.infoFormat
 import net.md_5.bungee.api.chat.ComponentBuilder
 import net.md_5.bungee.api.chat.HoverEvent
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
 import org.bukkit.entity.Player
-import net.md_5.bungee.api.chat.TextComponent
 
 class CommandNear : CommandExecutor {
 
@@ -78,4 +78,6 @@ class CommandNear : CommandExecutor {
 
         return false
     }
+
+
 }

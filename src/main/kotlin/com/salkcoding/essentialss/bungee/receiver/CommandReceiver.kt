@@ -1,9 +1,8 @@
 package com.salkcoding.essentialss.bungee.receiver
 
 import com.google.common.io.ByteStreams
-import com.salkcoding.essentialss.bukkitLinkedAPI
-import com.salkcoding.essentialss.bungee.chnnelapi.BungeeChannelApi
-import com.salkcoding.essentialss.util.teleport
+import com.salkcoding.essentialss.bungee.channelapi.BungeeChannelApi
+import com.salkcoding.essentialss.util.bungeeTeleport
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
@@ -17,7 +16,7 @@ class CommandReceiver : BungeeChannelApi.ForwardConsumer {
                 val toName = inMessage.readUTF()
 
                 val fromPlayer = Bukkit.getPlayer(fromName)
-                if (fromPlayer != null) bukkitLinkedAPI.teleport(fromPlayer, toName)
+                if (fromPlayer != null) bungeeTeleport(fromPlayer, toName)
             }
             /*"essentials-tphere" -> {
 

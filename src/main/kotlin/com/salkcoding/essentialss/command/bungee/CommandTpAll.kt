@@ -2,6 +2,7 @@ package com.salkcoding.essentialss.command.bungee
 
 import com.salkcoding.essentialss.bukkitLinkedAPI
 import com.salkcoding.essentialss.essentials
+import com.salkcoding.essentialss.util.bungeeTeleport
 import com.salkcoding.essentialss.util.errorFormat
 import com.salkcoding.essentialss.util.infoFormat
 import me.baiks.bukkitlinked.api.TeleportResult
@@ -26,13 +27,14 @@ class CommandTpAll : CommandExecutor {
         }
 
         Bukkit.getOnlinePlayers().forEach {
-            if (it.uniqueId != player.uniqueId) {
-                it.teleportAsync(player.location)
-                it.sendMessage("텔레포트 되었습니다.".infoFormat())
-            }
+            if (it.uniqueId == player.uniqueId || it.isOp) return@forEach
+
+            it.teleportAsync(player.location)
+            it.sendMessage("텔레포트 되었습니다.".infoFormat())
         }
 
         bukkitLinkedAPI.onlinePlayersInfo.forEach {
+            if (it.isOp) return@forEach
             val result = bukkitLinkedAPI.teleport(it.playerUUID, player.uniqueId)
             if (result != TeleportResult.TELEPORT_STARTED)
                 essentials.logger.warning("Teleport failed, ${it.playerName}(${it.playerUUID}) -> ${player.name}(${player.uniqueId}), Result: $result")

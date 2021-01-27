@@ -3,12 +3,10 @@ package com.salkcoding.essentialss.command.bungee
 import com.salkcoding.essentialss.bukkitLinkedAPI
 import com.salkcoding.essentialss.bungeeApi
 import com.salkcoding.essentialss.essentials
+import com.salkcoding.essentialss.util.bungeeTeleport
 import com.salkcoding.essentialss.util.errorFormat
 import com.salkcoding.essentialss.util.infoFormat
-import com.salkcoding.essentialss.util.teleport
-import me.baiks.bukkitlinked.api.TeleportResult
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -37,7 +35,7 @@ class CommandTp : CommandExecutor {
                 if (targetPlayer != null) {
                     player.teleportAsync(targetPlayer.location)
                 } else {
-                    bukkitLinkedAPI.teleport(player, targetName)
+                    bungeeTeleport(player, targetName)
                     return true
                 }
             }
@@ -56,7 +54,7 @@ class CommandTp : CommandExecutor {
                     }
                     //Have to use bungee
                     fromPlayer != null && toPlayer == null -> {
-                        bukkitLinkedAPI.teleport(fromPlayer, toName)
+                        bungeeTeleport(fromPlayer, toName)
                     }
                     else -> {
                         val onlinePlayerList = bukkitLinkedAPI.onlinePlayersInfo

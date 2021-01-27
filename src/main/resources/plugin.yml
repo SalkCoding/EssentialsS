@@ -38,6 +38,8 @@ commands:
     description: near
   repair:
     description: repair
+  speed:
+    description: speed
   top:
     description: top
   tppos:

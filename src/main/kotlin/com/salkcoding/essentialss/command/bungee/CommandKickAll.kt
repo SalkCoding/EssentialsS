@@ -3,6 +3,7 @@ package com.salkcoding.essentialss.command.bungee
 import com.salkcoding.essentialss.bukkitLinkedAPI
 import com.salkcoding.essentialss.bungeeApi
 import com.salkcoding.essentialss.util.errorFormat
+import com.salkcoding.essentialss.util.infoFormat
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -29,6 +30,7 @@ class CommandKickAll : CommandExecutor {
                     if (!it.isOp)
                         bungeeApi.kickPlayer(it.playerName, "관리자에의해 킥당하셨습니다.")
                 }
+                sender.sendMessage("모든 플레이어를 킥했습니다.".infoFormat())
             }
             else -> {
                 val message = ChatColor.translateAlternateColorCodes('&', args.joinToString(" "))
@@ -42,6 +44,7 @@ class CommandKickAll : CommandExecutor {
                     if (!it.isOp)
                         bungeeApi.kickPlayer(it.playerName, message)
                 }
+                sender.sendMessage("모든 플레이어를 킥했습니다.".infoFormat())
             }
         }
 
