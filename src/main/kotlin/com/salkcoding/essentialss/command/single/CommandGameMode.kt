@@ -57,7 +57,7 @@ class CommandGameMode : CommandExecutor {
                     return true
                 }
 
-                val gameMode = args[0].toGameMode() ?: when (targetPlayer.gameMode) {
+                val gameMode = args[1].toGameMode() ?: when (targetPlayer.gameMode) {
                     GameMode.SURVIVAL -> GameMode.CREATIVE
                     GameMode.CREATIVE -> GameMode.ADVENTURE
                     else -> GameMode.SURVIVAL
