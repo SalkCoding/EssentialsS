@@ -2,14 +2,18 @@ package com.salkcoding.essentialss.util
 
 import org.bukkit.ChatColor
 
+fun String.announceFormat(): String {
+    return "\ue4db ${ChatColor.RESET}$this"
+}
+
 fun String.infoFormat(): String {
-    return "${ChatColor.WHITE}[${ChatColor.GREEN}!${ChatColor.WHITE}] ${ChatColor.RESET}$this"
+    return "\ue4dc ${ChatColor.RESET}$this"
 }
 
 fun String.warnFormat(): String {
-    return "${ChatColor.WHITE}[${ChatColor.YELLOW}!${ChatColor.WHITE}] ${ChatColor.RESET}$this"
+    return "\ue4dd ${ChatColor.RESET}$this"
 }
 
 fun String.errorFormat(): String {
-    return "${ChatColor.WHITE}[${ChatColor.RED}!${ChatColor.WHITE}] ${ChatColor.RESET}$this"
+    return "\ue4de ${ChatColor.RESET}$this"
 }
