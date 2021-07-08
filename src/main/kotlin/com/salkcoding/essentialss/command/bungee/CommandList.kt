@@ -8,6 +8,7 @@ import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
@@ -23,18 +24,26 @@ class CommandList : CommandExecutor {
             0 -> {
                 Bukkit.getScheduler().runTaskAsynchronously(essentials, Runnable {
                     val serverFuture = bungeeApi.servers
-                    serverFuture.get(10, TimeUnit.SECONDS).forEach { server ->
-                        val playerListFuture = bungeeApi.getPlayerList(server)
-                        val playerList = playerListFuture.get(10, TimeUnit.SECONDS).joinToString(", ")
-                        sender.sendMessage("${server}: $playerList".infoFormat())
+                    try {
+                        serverFuture.get(10, TimeUnit.SECONDS).forEach { server ->
+                            val playerListFuture = bungeeApi.getPlayerList(server)
+                            val playerList = playerListFuture.get(10, TimeUnit.SECONDS)
+                            sender.sendMessage("${server}: ${playerList.size} (${playerList.joinToString(", ")})".infoFormat())
+                        }
+                    } catch (e: InterruptedException) {
+                        sender.sendMessage("InterruptedException ${e.message}")
+                    } catch (e: ExecutionException) {
+                        sender.sendMessage("ExecutionException ${e.message}")
+                    } catch (e: TimeoutException){
+                        sender.sendMessage("TimeoutException ${e.message}")
                     }
                 })
                 return true
             }
             1 -> {
                 val playerListFuture = bungeeApi.getPlayerList(args[0])
-                val playerList = playerListFuture.get(10, TimeUnit.SECONDS).joinToString(", ")
-                sender.sendMessage("${args[0]}: $playerList".infoFormat())
+                val playerList = playerListFuture.get(10, TimeUnit.SECONDS)
+                sender.sendMessage("${args[0]}: ${playerList.size} (${playerList.joinToString(", ")})".infoFormat())
                 return true
             }
         }

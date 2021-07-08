@@ -26,7 +26,7 @@ class CommandTop : CommandExecutor {
         }
 
         if (args.isEmpty()) {
-            if (player.world.environment == World.Environment.NETHER) {
+            if ("nether" in player.world.name) {
                 val location = player.location.toCenterLocation()
                 for (y in 120 downTo 30) {
                     location.y = y.toDouble()
@@ -38,7 +38,10 @@ class CommandTop : CommandExecutor {
                     PlayerTeleportEvent.TeleportCause.COMMAND
                 )
                 player.sendMessage("이동되었습니다.".infoFormat())
-            } else player.sendMessage("일반 월드만 가능한 명령어입니다.".infoFormat())
+            } else {
+                val location = player.world.getHighestBlockAt(player.location).location.toCenterLocation()
+                player.teleportAsync(location)
+            }
             return true
         }
         return false

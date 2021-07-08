@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
+import java.util.*
 
 class CommandKillAll : CommandExecutor, TabCompleter {
 
@@ -39,7 +40,7 @@ class CommandKillAll : CommandExecutor, TabCompleter {
             }
             1 -> {
                 try {
-                    val type = EntityType.valueOf(args[0].toUpperCase())
+                    val type = EntityType.valueOf(args[0].uppercase())
                     player.sendMessage("${deleteEntities(player.location, type)}마리의 ${type}이/가 제거되엇습니다.")
                 } catch (e: IllegalArgumentException) {
                     return false
@@ -48,7 +49,7 @@ class CommandKillAll : CommandExecutor, TabCompleter {
             }
             2 -> {
                 try {
-                    val type = EntityType.valueOf(args[0].toUpperCase())
+                    val type = EntityType.valueOf(args[0].uppercase())
                     val range = args[1].toDouble()
                     player.sendMessage("${deleteEntities(player.location, type, range)}마리의 ${type}이/가 제거되엇습니다.")
                 } catch (e: IllegalArgumentException) {
@@ -58,7 +59,7 @@ class CommandKillAll : CommandExecutor, TabCompleter {
             }
             4 -> {
                 try {
-                    val type = EntityType.valueOf(args[0].toUpperCase())
+                    val type = EntityType.valueOf(args[0].uppercase())
                     val rangeX = args[1].toDouble()
                     val rangeY = args[2].toDouble()
                     val rangeZ = args[3].toDouble()

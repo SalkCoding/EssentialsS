@@ -1,10 +1,7 @@
 package com.salkcoding.essentialss.util
 
 import com.salkcoding.essentialss.bukkitLinkedAPI
-import com.salkcoding.essentialss.essentials
-import me.baiks.bukkitlinked.api.TeleportResult
 import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 import java.util.*
 
 fun String.getUUIDFromName(): UUID {
@@ -28,17 +25,4 @@ fun UUID.getUUIDFromName(): String? {
     if (playerInfo != null) return playerInfo.playerName
 
     return Bukkit.getOfflinePlayer(this).name
-}
-
-fun bungeeTeleport(player: Player, targetName: String) {
-    val toPlayerInfo = bukkitLinkedAPI.onlinePlayersInfo.find { it.playerName == targetName }
-    if (toPlayerInfo != null) {
-        val result = bukkitLinkedAPI.teleport(player.uniqueId, toPlayerInfo.playerUUID)
-        if (result == TeleportResult.TELEPORT_STARTED) {
-            essentials.logger.info("Teleport succeeded, ${player.name}(${player.uniqueId}) -> ${toPlayerInfo.playerName}(${toPlayerInfo.playerUUID}), Result: $result")
-        } else {
-            player.sendMessage("Teleport failed, Result: $result".errorFormat())
-            essentials.logger.warning("Teleport failed, ${player.name}(${player.uniqueId}) -> ${toPlayerInfo.playerName}(${toPlayerInfo.playerUUID}), Result: $result")
-        }
-    }
 }

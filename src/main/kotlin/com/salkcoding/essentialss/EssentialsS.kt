@@ -1,7 +1,6 @@
 package com.salkcoding.essentialss
 
 import com.salkcoding.essentialss.bungee.channelapi.BungeeChannelApi
-import com.salkcoding.essentialss.bungee.receiver.CommandReceiver
 import com.salkcoding.essentialss.command.bungee.*
 import com.salkcoding.essentialss.command.single.*
 import me.baiks.bukkitlinked.BukkitLinked
@@ -9,8 +8,10 @@ import me.baiks.bukkitlinked.api.BukkitLinkedAPI
 import org.bukkit.plugin.java.JavaPlugin
 
 lateinit var essentials: EssentialsS
-lateinit var bungeeApi: BungeeChannelApi
+lateinit var currentServerName: String
+
 lateinit var bukkitLinkedAPI: BukkitLinkedAPI
+lateinit var bungeeApi: BungeeChannelApi
 
 class EssentialsS : JavaPlugin() {
 
@@ -25,7 +26,9 @@ class EssentialsS : JavaPlugin() {
         bukkitLinkedAPI = bukkitLinked.api
 
         bungeeApi = BungeeChannelApi.of(this)
-        bungeeApi.registerForwardListener("essentials-tp", CommandReceiver())
+
+        saveDefaultConfig()
+        currentServerName = config.getString("serverName")!!
 
         getCommand("kickall")!!.setExecutor(CommandKickAll())
         getCommand("list")!!.setExecutor(CommandList())

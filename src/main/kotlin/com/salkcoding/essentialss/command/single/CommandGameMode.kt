@@ -34,7 +34,7 @@ class CommandGameMode : CommandExecutor {
                     else -> GameMode.SURVIVAL
                 }
 
-                val event = PlayerGameModeChangeEvent(player, gameMode)
+                val event = PlayerGameModeChangeEvent(player, gameMode, PlayerGameModeChangeEvent.Cause.COMMAND, null)
                 essentials.server.pluginManager.callEvent(event)
                 if (event.isCancelled) throw QuietAbortException("GameMode changing cancelled!")
 
@@ -62,7 +62,7 @@ class CommandGameMode : CommandExecutor {
                     GameMode.CREATIVE -> GameMode.ADVENTURE
                     else -> GameMode.SURVIVAL
                 }
-                val event = PlayerGameModeChangeEvent(targetPlayer, gameMode)
+                val event = PlayerGameModeChangeEvent(player, gameMode, PlayerGameModeChangeEvent.Cause.COMMAND, null)
                 essentials.server.pluginManager.callEvent(event)
                 if (event.isCancelled) throw QuietAbortException("GameMode changing cancelled!")
 
@@ -83,7 +83,7 @@ class CommandGameMode : CommandExecutor {
     }
 
     private fun String.toGameMode(): GameMode? {
-        return when (this.toLowerCase()) {
+        return when (this.lowercase()) {
             "0", "s", "survival" -> GameMode.SURVIVAL
             "1", "c", "creative" -> GameMode.CREATIVE
             "2", "a", "adventure" -> GameMode.ADVENTURE

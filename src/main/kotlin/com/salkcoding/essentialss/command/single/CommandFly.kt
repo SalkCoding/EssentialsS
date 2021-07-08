@@ -22,6 +22,9 @@ class CommandFly : CommandExecutor {
             return true
         }
 
+        if (!player.allowFlight)
+            player.allowFlight = true
+
         player.isFlying = !player.isFlying
         when (player.isFlying) {
             true -> {

@@ -1,9 +1,7 @@
 package com.salkcoding.essentialss.command.bungee
 
 import com.salkcoding.essentialss.bukkitLinkedAPI
-import com.salkcoding.essentialss.bungeeApi
 import com.salkcoding.essentialss.essentials
-import com.salkcoding.essentialss.util.bungeeTeleport
 import com.salkcoding.essentialss.util.errorFormat
 import com.salkcoding.essentialss.util.infoFormat
 import org.bukkit.Bukkit
@@ -11,9 +9,6 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import java.io.ByteArrayOutputStream
-import java.io.DataOutputStream
-import java.io.IOException
 
 class CommandTp : CommandExecutor {
 
@@ -35,7 +30,9 @@ class CommandTp : CommandExecutor {
                 if (targetPlayer != null) {
                     player.teleportAsync(targetPlayer.location)
                 } else {
-                    bungeeTeleport(player, targetName)
+                    player.sendMessage("이동되었습니다.".infoFormat())
+                    bukkitLinkedAPI.sendMessageAcrossServer(targetName, "이동되었습니다.".infoFormat())
+                    bukkitLinkedAPI.teleport(player.name, targetName)
                     return true
                 }
             }
@@ -47,33 +44,16 @@ class CommandTp : CommandExecutor {
                 when {
                     //Just teleport
                     fromPlayer != null && toPlayer != null -> {
-                        fromPlayer.teleportAsync(toPlayer.location)
                         fromPlayer.sendMessage("이동되었습니다.".infoFormat())
                         toPlayer.sendMessage("이동되었습니다.".infoFormat())
+                        fromPlayer.teleportAsync(toPlayer.location)
                         return true
                     }
                     //Have to use bungee
-                    fromPlayer != null && toPlayer == null -> {
-                        bungeeTeleport(fromPlayer, toName)
-                    }
                     else -> {
-                        val onlinePlayerList = bukkitLinkedAPI.onlinePlayersInfo
-                        val fromPlayerInfo = onlinePlayerList.find { it.playerName == fromName }
-                        val toPlayerInfo = onlinePlayerList.find { it.playerName == toName }
-                        if (fromPlayerInfo == null || toPlayerInfo == null) {
-                            sender.sendMessage("존재하지 않은 플레이어입니다.".errorFormat())
-                            return true
-                        }
-
-                        val messageBytes = ByteArrayOutputStream()
-                        val messageOut = DataOutputStream(messageBytes)
-                        try {
-                            messageOut.writeUTF(fromName)
-                            messageOut.writeUTF(toName)
-                        } catch (exception: IOException) {
-                            exception.printStackTrace()
-                        }
-                        bungeeApi.forward(fromPlayerInfo.serverName, "essentials-tp", messageBytes.toByteArray())
+                        bukkitLinkedAPI.sendMessageAcrossServer(fromName, "이동되었습니다.".infoFormat())
+                        bukkitLinkedAPI.sendMessageAcrossServer(toName, "이동되었습니다.".infoFormat())
+                        bukkitLinkedAPI.teleport(fromName, toName)
                     }
                 }
             }
