@@ -1,0 +1,76 @@
+name: EssentialsS
+version: 1.1.0-SNAPSHOT
+api-version: 1.19
+description: Essentials made by Salk_Coding
+author: Salk_Coding
+main: net.salkcoding.essentialss.EssentialsS
+commands:
+  back:
+    description: back
+  broadcast:
+    description: broadcast
+  feed:
+    description: feed
+  delhome:
+    description: delhome
+  gamemode:
+    description: gamemode
+    aliases: [gm]
+  heal:
+    description: heal
+  home:
+    description: home
+  seen:
+    description: seen
+  setspawn:
+    description: setspawn
+  setnewbiespawn:
+    description: newbiespawn
+  sethome:
+    description: sethome
+  spawn:
+    description: spawn
+  newbiespawn:
+    description: newbiespawn
+  tp:
+    description: tp
+  tpall:
+    description: tpall
+  tphere:
+    description: tphere
+  tppos:
+    description: tppos
+  xp:
+    description: xp
+    aliases: [exp]
+  clearinventory:
+    description: ci
+    aliases: [ci]
+  killall:
+    description: killall
+  more:
+    description: more
+  top:
+    description: top
+  fly:
+    description: fly
+  speed:
+    description: speed
+  ignore:
+    description: ignore
+  vanish:
+    description: vanish
+  tpwpos:
+    description: tpwpos
+  maxplayer:
+    description: maxplayer
+  kickall:
+    description: kickall
+  list:
+    description: list
+  near:
+    description: near
+  repair:
+    description: repair
+  es:
+    description: auto command
