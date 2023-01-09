@@ -1,6 +1,5 @@
 package com.salkcoding.essentialss.command.single
 
-import br.com.devsrsouza.kotlinbukkitapi.extensions.player.clearAll
 import com.salkcoding.essentialss.essentials
 import com.salkcoding.essentialss.util.errorFormat
 import com.salkcoding.essentialss.util.infoFormat
@@ -20,7 +19,7 @@ class CommandClearInventory : CommandExecutor {
                     essentials.logger.warning("Player only command")
                     return true
                 }
-                player.inventory.clearAll()
+                player.inventory.clear()
                 player.sendMessage("인벤토리가 초기화되었습니다.".infoFormat())
             }
             1 -> {
@@ -34,7 +33,7 @@ class CommandClearInventory : CommandExecutor {
                     sender.sendMessage("존재하지 않는 플레이어입니다.")
                     return true
                 }
-                player.inventory.clearAll()
+                player.inventory.clear()
                 player.sendMessage("인벤토리가 초기화되었습니다.".infoFormat())
                 sender.sendMessage("해당 플레이어의 인벤토리가 초기화되었습니다.".infoFormat())
             }

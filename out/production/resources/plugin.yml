@@ -2,9 +2,9 @@ name: EssentialsS
 main: com.salkcoding.essentialss.EssentialsS
 version: 1.1.0-SNAPSHOT
 description: Essentials by Salk_Coding
-api-version: 1.19
+api-version: 1.16
 author: Salk_Coding
-depend: [ BukkitLinked, Metamorphosis ]
+depend: [ KotlinBukkitAPI, BukkitLinked, Metamorphosis ]
 commands:
   kickall:
     description: kickall

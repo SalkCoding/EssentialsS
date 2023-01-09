@@ -32,7 +32,7 @@ class CommandRepair : CommandExecutor {
                 return true
             }
             meta.damage = 0
-            itemOnMain.itemMeta = meta as ItemMeta
+            itemOnMain.itemMeta = meta
             player.updateInventory()
             return true
         } else {
@@ -44,7 +44,7 @@ class CommandRepair : CommandExecutor {
                     return true
                 }
                 meta.damage = 0
-                itemOnOff.itemMeta = meta as ItemMeta
+                itemOnOff.itemMeta = meta
                 player.updateInventory()
                 return true
             } else

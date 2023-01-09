@@ -1,0 +1,58 @@
+#TeleportMaxStandby: 5
+
+HomeBanWorlds: [resource_1]
+
+DBName: 'test'
+DBIP: 'localhost'
+Port: 3306
+UserName: 'root'
+Password: 'test'
+Encoding: 'utf-8'
+
+BungeeServerName: 'lobby'
+
+SpawnServerName: 'lobby'
+
+LobbyServerName: 'lobby'
+
+TeleportMessage: '텔레포트 중입니다...'
+PlayerNotExistedMessage: '해당 플레이어가 존재하지 않습니다.'
+WelcomeMessage: '[0]님이 서버에 처음 접속하셨습니다.'
+JoinMessage: '[0]님이 서버에 접속하셨습니다.'
+QuitMessage: '[0]님이 접속을 끊었습니다.'
+
+BackMessage: '/back을 치시면 최근 위치로 이동합니다.'
+
+DeleteHomeMessage: '홈이 삭제되었습니다.'
+
+SetHomeMessage: '홈이 지정되었습니다.'
+
+SetSpawnMessage: '스폰이 지정되었습니다.'
+FailSetSpawnMessage: '해당 침대는 홈으로 지정할 수 없습니다.'
+
+HomeNotExistedMessage: '홈이 없습니다.'
+
+FeedMessage: '허기가 채워졌습니다.'
+
+HealMessage: '회복되었습니다.'
+
+GameModeChangeMessage: '게임모드가 업데이트 되었습니다.'
+
+XpShowMessage: '[0]의 경험치 -> [1]'
+XpSetMessage: '[0]의 경험치가 [1]로 설정되었습니다.'
+XpGiveMesssage: '[0]에게 [1]만큼의 경험치를 주었습니다.'
+
+ClearInventoryMessage: '인벤토리가 초기화되었습니다.'
+
+AirHandMessage: '아이템이 손에 들려있지 않습니다.'
+
+MoreMessage: '아이템을 더 얻었습니다.'
+
+FlyEnableMessage: '플라이가 활성화 되었습니다.'
+FlyDisableMessage: '플라이가 비활성화 되었습니다.'
+
+SettingFlySpeedMessage: "플라이 속도가 [0]으로 설정되었습니다."
+SettingWalkSpeedMessage: '걷는 속도가 [0]으로 설정되었습니다.'
+
+IgnoreEnableMessage: '[0]의 메세지를 차단했습니다.'
+IgnoreDisableMessage: '[0]의 메세지를 차단 해제했습니다.'
