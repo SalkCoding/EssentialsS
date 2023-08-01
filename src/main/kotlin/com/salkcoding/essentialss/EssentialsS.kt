@@ -1,8 +1,10 @@
 package com.salkcoding.essentialss
 
 import com.salkcoding.essentialss.bungee.channelapi.BungeeChannelApi
+import com.salkcoding.essentialss.command.admin.CommandTpaTicket
 import com.salkcoding.essentialss.command.bungee.*
 import com.salkcoding.essentialss.command.single.*
+import fish.evatuna.metamorphosis.Metamorphosis
 import me.baiks.bukkitlinked.BukkitLinked
 import me.baiks.bukkitlinked.api.BukkitLinkedAPI
 import org.bukkit.plugin.java.JavaPlugin
@@ -11,7 +13,8 @@ lateinit var essentials: EssentialsS
 lateinit var currentServerName: String
 
 lateinit var bukkitLinkedAPI: BukkitLinkedAPI
-lateinit var bungeeApi: BungeeChannelApi
+lateinit var metamorphosis: Metamorphosis
+lateinit var bungeeAPI: BungeeChannelApi
 
 class EssentialsS : JavaPlugin() {
 
@@ -25,10 +28,21 @@ class EssentialsS : JavaPlugin() {
         }
         bukkitLinkedAPI = bukkitLinked.api
 
-        bungeeApi = BungeeChannelApi.of(this)
+        val meta = server.pluginManager.getPlugin("Metamorphosis") as? Metamorphosis
+        if (meta == null) {
+            server.pluginManager.disablePlugin(this)
+            return
+        }
+        metamorphosis = meta
+
+        bungeeAPI = BungeeChannelApi.of(this)
 
         saveDefaultConfig()
         currentServerName = config.getString("serverName")!!
+        getCommand("tpaticket")!!.setExecutor(CommandTpaTicket())
+        getCommand("tpa")!!.setExecutor(CommandTpa())
+        getCommand("tpaccept")!!.setExecutor(CommandTpAccept())
+        getCommand("tpdeny")!!.setExecutor(CommandTpDeny())
 
         getCommand("kickall")!!.setExecutor(CommandKickAll())
         getCommand("list")!!.setExecutor(CommandList())
@@ -59,6 +73,8 @@ class EssentialsS : JavaPlugin() {
         val xp = CommandXp()
         getCommand("xp")!!.setExecutor(xp)
         getCommand("xp")!!.tabCompleter = xp
+
+        server.pluginManager.registerEvents(CommandList(), this)
 
         logger.info("Plugin enabled")
     }
