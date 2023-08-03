@@ -9,10 +9,10 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import java.util.*
 
-val tpaTicketMap = MetaSyncedMap<UUID, Long>(
+val tpaTicketMap = MetaSyncedMap<UUID, ExpiredMilliseconds>(
     "com.salkcoding.essentialss.tpa_ticket",
     UUID::class.java,
-    Long::class.java
+    ExpiredMilliseconds::class.java
 )
 
 class CommandTpaTicket : CommandExecutor {
@@ -30,12 +30,14 @@ class CommandTpaTicket : CommandExecutor {
                     essentials.logger.warning("Player only command")
                     return true
                 }
-                val expired = Calendar.getInstance().apply {
+                val expired = ExpiredMilliseconds(Calendar.getInstance().apply {
                     add(Calendar.HOUR, 3)
-                }.timeInMillis
+                }.timeInMillis)
                 tpaTicketMap[sender.uniqueId] = expired
             }
         }
         return false
     }
 }
+
+data class ExpiredMilliseconds(val milliseconds: Long)

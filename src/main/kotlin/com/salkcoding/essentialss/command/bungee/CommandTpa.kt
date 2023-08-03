@@ -35,7 +35,7 @@ class CommandTpa : CommandExecutor {
             //send tpa
             1 -> {
                 if (tpaTicketMap.containsKey(player.uniqueId)) {
-                    val between = tpaTicketMap[sender.uniqueId]!! - System.currentTimeMillis()
+                    val between = tpaTicketMap[sender.uniqueId]!!.milliseconds - System.currentTimeMillis()
                     if (between <= 0) {
                         tpaTicketMap.remove(sender.uniqueId)
                         return true
