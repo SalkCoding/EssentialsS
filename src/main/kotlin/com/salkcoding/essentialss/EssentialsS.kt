@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 lateinit var essentials: EssentialsS
 lateinit var currentServerName: String
+lateinit var tpaLimitWorldName: Set<String>
 
 lateinit var bukkitLinkedAPI: BukkitLinkedAPI
 lateinit var metamorphosis: Metamorphosis
@@ -39,8 +40,11 @@ class EssentialsS : JavaPlugin() {
 
         saveDefaultConfig()
         currentServerName = config.getString("serverName")!!
+        tpaLimitWorldName= config.getList("tpaLimitWorld")!!.toSet() as Set<String>
+
         getCommand("tpaticket")!!.setExecutor(CommandTpaTicket())
         getCommand("tpa")!!.setExecutor(CommandTpa())
+        getCommand("tpacheck")!!.setExecutor(CommandTpaCheck())
         getCommand("tpaccept")!!.setExecutor(CommandTpAccept())
         getCommand("tpdeny")!!.setExecutor(CommandTpDeny())
 

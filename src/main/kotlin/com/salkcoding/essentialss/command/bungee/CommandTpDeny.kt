@@ -25,8 +25,8 @@ class CommandTpDeny : CommandExecutor {
         }
 
         sender.sendMessage("요청을 거절하였습니다.".infoFormat())
-        val to = tpaInviteMap.remove(sender.uniqueId)!!
-        bukkitLinkedAPI.sendMessageAcrossServer(to,"상대방이 tpa를 ${ChatColor.RED}거절${ChatColor.WHITE}하였습니다.".infoFormat())
+        val from = tpaInviteMap.remove(sender.uniqueId)!!
+        bukkitLinkedAPI.sendMessageAcrossServer(from,"상대방이 tpa를 ${ChatColor.RED}거절${ChatColor.WHITE}하였습니다.".infoFormat())
         return true
     }
 }

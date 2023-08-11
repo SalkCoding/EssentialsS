@@ -1,1 +1,3 @@
 serverName: lobby
+tpaLimitWorld:
+  - world_nether

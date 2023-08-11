@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
-import java.util.*
 
 class CommandKillAll : CommandExecutor, TabCompleter {
 
@@ -133,7 +132,7 @@ class CommandKillAll : CommandExecutor, TabCompleter {
         rangeZ: Double
     ): Int {
         var deleted = 0
-        location.world.getNearbyLivingEntities(location, rangeX, rangeY, rangeZ).forEach {
+        location.world.getNearbyEntities(location, rangeX, rangeY, rangeZ).forEach {
             if (it.type == type) {
                 it.remove()
                 deleted++

@@ -1,6 +1,6 @@
 name: EssentialsS
 main: com.salkcoding.essentialss.EssentialsS
-version: 1.1.3-SNAPSHOT
+version: 1.1.4-SNAPSHOT
 description: Essentials by Salk_Coding
 api-version: 1.20
 author: Salk_Coding
@@ -20,6 +20,8 @@ commands:
     description: tphere
   tpa:
     description: tpa
+  tpacheck:
+    description: tpacheck
   tpaccept:
     description: tpaccept
   tpdeny:

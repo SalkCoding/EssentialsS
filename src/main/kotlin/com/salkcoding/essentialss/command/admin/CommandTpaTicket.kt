@@ -2,6 +2,7 @@ package com.salkcoding.essentialss.command.admin
 
 import com.salkcoding.essentialss.essentials
 import com.salkcoding.essentialss.util.errorFormat
+import com.salkcoding.essentialss.util.infoFormat
 import fish.evatuna.metamorphosis.syncedmap.MetaSyncedMap
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -34,6 +35,7 @@ class CommandTpaTicket : CommandExecutor {
                     add(Calendar.HOUR, 3)
                 }.timeInMillis)
                 tpaTicketMap[sender.uniqueId] = expired
+                sender.sendMessage("지금부터 3시간 동안 Tpa 명령어 이용이 가능합니다.".infoFormat())
             }
         }
         return false
