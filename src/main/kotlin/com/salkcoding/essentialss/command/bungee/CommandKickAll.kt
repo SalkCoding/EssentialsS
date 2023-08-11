@@ -1,7 +1,7 @@
 package com.salkcoding.essentialss.command.bungee
 
 import com.salkcoding.essentialss.bukkitLinkedAPI
-import com.salkcoding.essentialss.bungeeApi
+import com.salkcoding.essentialss.bungeeAPI
 import com.salkcoding.essentialss.util.errorFormat
 import com.salkcoding.essentialss.util.infoFormat
 import org.bukkit.Bukkit
@@ -28,7 +28,7 @@ class CommandKickAll : CommandExecutor {
 
                 bukkitLinkedAPI.onlinePlayersInfo.forEach {
                     if (!it.isOp)
-                        bungeeApi.kickPlayer(it.playerName, "관리자에의해 킥당하셨습니다.")
+                        bungeeAPI.kickPlayer(it.playerName,"모든 플레이어를 킥했습니다.")
                 }
                 sender.sendMessage("모든 플레이어를 킥했습니다.".infoFormat())
             }
@@ -42,7 +42,7 @@ class CommandKickAll : CommandExecutor {
 
                 bukkitLinkedAPI.onlinePlayersInfo.forEach {
                     if (!it.isOp)
-                        bungeeApi.kickPlayer(it.playerName, message)
+                        bungeeAPI.kickPlayer(it.playerName, message)
                 }
                 sender.sendMessage("모든 플레이어를 킥했습니다.".infoFormat())
             }

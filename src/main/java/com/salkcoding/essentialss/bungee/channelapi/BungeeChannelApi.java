@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import kotlin.Deprecated;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -21,6 +22,7 @@ import java.util.function.BiFunction;
  * @author leonardosnt (leonrdsnt@gmail.com)
  * @see <a href="https://www.spigotmc.org/wiki/bukkit-bungee-plugin-messaging-channel/">https://www.spigotmc.org/wiki/bukkit-bungee-plugin-messaging-channel/</a>
  */
+
 public class BungeeChannelApi {
 
     private static final WeakHashMap<Plugin, BungeeChannelApi> registeredInstances = new WeakHashMap<>();
