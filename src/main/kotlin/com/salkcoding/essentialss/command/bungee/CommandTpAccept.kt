@@ -28,7 +28,7 @@ class CommandTpAccept : CommandExecutor {
             return true
         }
 
-        sender.sendMessage("요청을 승낙하여, tpa를 요청한 사람에게 텔레포트 됩니다.".infoFormat())
+        sender.sendMessage("요청을 승낙하여, tpa를 요청한 사람이 텔레포트 됩니다.".infoFormat())
         val from = tpaInviteMap[sender.uniqueId]!!
         bukkitLinkedAPI.sendMessageAcrossServer(
             from,

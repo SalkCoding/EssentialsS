@@ -4,7 +4,7 @@ plugins {
 }
 
 group "kr.kro.salk"
-version "1.1.4-SNAPSHOT"
+version "1.1.5-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -16,10 +16,11 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib"
+    compileOnly 'net.luckperms:api:5.4'
 
     compileOnly "org.purpurmc.purpur:purpur-api:1.20.1-R0.1-SNAPSHOT"
 
     compileOnly files("lib/bukkitlinked-1.4.2-SNAPSHOT-jar-with-dependencies.jar")
-    compileOnly files('lib/Metamorphosis-2.3.0.jar')
+    compileOnly files('lib/Metamorphosis-api-2.7.0.jar')
 }

@@ -1,7 +1,7 @@
 package com.salkcoding.essentialss.command.bungee
 
 import com.salkcoding.essentialss.bukkitLinkedAPI
-import com.salkcoding.essentialss.command.admin.tpaTicketMap
+import com.salkcoding.essentialss.command.admin.tpaPermissionKey
 import com.salkcoding.essentialss.essentials
 import com.salkcoding.essentialss.tpaLimitWorldName
 import com.salkcoding.essentialss.util.TeleportCooltime
@@ -10,6 +10,7 @@ import com.salkcoding.essentialss.util.infoFormat
 import com.salkcoding.essentialss.util.warnFormat
 import fish.evatuna.metamorphosis.syncedmap.MetaSyncedMap
 import me.baiks.bukkitlinked.models.PlayerInfo
+import net.luckperms.api.LuckPermsProvider
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -33,20 +34,24 @@ class CommandTpa : CommandExecutor {
             return true
         }
 
-        if (!sender.isOp && player.uniqueId !in tpaTicketMap) {
-            sender.sendMessage("권한이 없습니다.".errorFormat())
+        val lp = LuckPermsProvider.get()
+        val user = lp.userManager.getUser(player.uniqueId) ?: throw IllegalStateException("User not found in luckperms")
+        val hasPermission = user.nodes.any { it.key == tpaPermissionKey && it.hasExpiry() && !it.hasExpired()}
+
+        if (!sender.isOp && !hasPermission) {
+            sender.sendMessage("마일리지를 사용해서 tpa권을 구매해주세요.".errorFormat())
             return true
         }
 
         when (args.size) {
             //send tpa
             1 -> {
-                val between = tpaTicketMap[sender.uniqueId]!!.milliseconds - System.currentTimeMillis()
-                if (between <= 0) {
-                    player.sendMessage("Tpa 시간이 만료되었습니다.".warnFormat())
-                    tpaTicketMap.remove(sender.uniqueId)
-                    return true
-                }
+//                val between = tpaTicketMap[sender.uniqueId]!!.milliseconds - System.currentTimeMillis()
+//                if (between <= 0) {
+//                    player.sendMessage("Tpa 시간이 만료되었습니다.".warnFormat())
+//                    tpaTicketMap.remove(sender.uniqueId)
+//                    return true
+//                }
 
                 val info: PlayerInfo? = bukkitLinkedAPI.getPlayerInfo(args[0])
                 if (info == null) {
