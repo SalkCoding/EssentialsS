@@ -28,7 +28,7 @@ class CommandTpaCheck : CommandExecutor {
 
         val delta = tpaPermission.expiryDuration!!.toMillis()
 
-        val hours = (delta / 3600000) % 24
+        val hours = (delta / 3600000) / 24
         val minutes = (delta / 60000) % 60
         val seconds = (delta / 1000) % 60
 
