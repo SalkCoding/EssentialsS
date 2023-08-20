@@ -1,7 +1,7 @@
 package com.salkcoding.essentialss.command.bungee
 
 import com.salkcoding.essentialss.bukkitLinkedAPI
-import com.salkcoding.essentialss.command.admin.tpaTicketMap
+import com.salkcoding.essentialss.command.admin.tpaPermissionKey
 import com.salkcoding.essentialss.essentials
 import com.salkcoding.essentialss.tpaLimitWorldName
 import com.salkcoding.essentialss.util.TeleportCooltime
@@ -10,6 +10,7 @@ import com.salkcoding.essentialss.util.infoFormat
 import com.salkcoding.essentialss.util.warnFormat
 import fish.evatuna.metamorphosis.syncedmap.MetaSyncedMap
 import me.baiks.bukkitlinked.models.PlayerInfo
+import net.luckperms.api.LuckPermsProvider
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -33,21 +34,18 @@ class CommandTpa : CommandExecutor {
             return true
         }
 
-        if (!sender.isOp && player.uniqueId !in tpaTicketMap) {
-            sender.sendMessage("권한이 없습니다.".errorFormat())
+        val lp = LuckPermsProvider.get()
+        val user = lp.userManager.getUser(player.uniqueId) ?: throw IllegalStateException("User not found in luckperms")
+        val hasPermission = user.nodes.any { it.key == tpaPermissionKey && it.hasExpiry() && !it.hasExpired()}
+
+        if (!sender.isOp && !hasPermission) {
+            sender.sendMessage("마일리지를 사용해서 tpa권을 구매해주세요.".errorFormat())
             return true
         }
 
         when (args.size) {
             //send tpa
             1 -> {
-                val between = tpaTicketMap[sender.uniqueId]!!.milliseconds - System.currentTimeMillis()
-                if (between <= 0) {
-                    player.sendMessage("Tpa 시간이 만료되었습니다.".warnFormat())
-                    tpaTicketMap.remove(sender.uniqueId)
-                    return true
-                }
-
                 val info: PlayerInfo? = bukkitLinkedAPI.getPlayerInfo(args[0])
                 if (info == null) {
                     sender.sendMessage("${args[0]}이라는 이름을 가진 유저가 없습니다.".errorFormat())
@@ -60,7 +58,7 @@ class CommandTpa : CommandExecutor {
                 }
 
                 val targetUUID = info.playerUUID
-                if (tpaInviteMap.containsKey(targetUUID)) {
+                if (targetUUID in tpaInviteMap) {
                     sender.sendMessage("해당 플레이어는 현재 다른 플레이어의 tpa를 기다리고 있습니다. 나중에 다시 시도해 주세요.".warnFormat())
                     return true
                 }
@@ -70,7 +68,7 @@ class CommandTpa : CommandExecutor {
                 Bukkit.getScheduler().runTaskLater(
                     essentials,
                     Runnable {
-                        if (tpaInviteMap.containsKey(targetUUID)) {
+                        if (targetUUID in tpaInviteMap) {
                             tpaInviteMap.remove(targetUUID)
                             sender.sendMessage("해당 플레이어가 tpa에 응답하지 않습니다.".warnFormat())
                             bukkitLinkedAPI.sendMessageAcrossServer(targetUUID, "tpa 요청이 만료되었습니다.".warnFormat())
@@ -88,10 +86,11 @@ class CommandTpa : CommandExecutor {
                 taskAcceptMap[sender.uniqueId] = Bukkit.getScheduler().runTaskTimer(
                     essentials,
                     Runnable {
-                        if (tpAcceptMap.containsKey(sender.uniqueId)) {
-                            TeleportCooltime.addPlayer(sender, null, 100, Runnable {
+                        if (sender.uniqueId in tpAcceptMap) {
+                            TeleportCooltime.addPlayer(sender, null, 100, {
                                 bukkitLinkedAPI.teleport(sender.uniqueId, targetUUID)
                             }, false)
+                            tpaInviteMap.remove(tpAcceptMap[sender.uniqueId]!!)
                             tpAcceptMap.remove(sender.uniqueId)
                             taskAcceptMap.remove(sender.uniqueId)?.cancel()
                         }

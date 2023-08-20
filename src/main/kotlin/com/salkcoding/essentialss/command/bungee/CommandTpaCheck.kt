@@ -1,8 +1,9 @@
 package com.salkcoding.essentialss.command.bungee
 
-import com.salkcoding.essentialss.command.admin.tpaTicketMap
+import com.salkcoding.essentialss.command.admin.tpaPermissionKey
 import com.salkcoding.essentialss.util.infoFormat
 import com.salkcoding.essentialss.util.warnFormat
+import net.luckperms.api.LuckPermsProvider
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -16,19 +17,18 @@ class CommandTpaCheck : CommandExecutor {
             return true
         }
 
-        if (sender.uniqueId !in tpaTicketMap) {
-            sender.sendMessage("현재 tpa를 사용할 수 없습니다.".warnFormat())
+        val lp = LuckPermsProvider.get()
+        val user = lp.userManager.getUser(sender.uniqueId) ?: throw IllegalStateException("User not found in luckperms")
+        val tpaPermission = user.nodes.firstOrNull { it.key == tpaPermissionKey && it.hasExpiry() && !it.hasExpired()}
+
+        if (tpaPermission == null) {
+            sender.sendMessage("현재 사용 가능한 TPA권이 없습니다.".warnFormat())
             return true
         }
 
-        val expiredMilliseconds = tpaTicketMap[sender.uniqueId]!!
-        val delta = expiredMilliseconds.milliseconds - System.currentTimeMillis()
-        if (delta <= 0) {
-            sender.sendMessage("Tpa 사용 가능 시간이 만료되었습니다.".warnFormat())
-            return true
-        }
+        val delta = tpaPermission.expiryDuration!!.toMillis()
 
-        val hours = (delta / 3600000) % 24
+        val hours = (delta / 3600000) / 24
         val minutes = (delta / 60000) % 60
         val seconds = (delta / 1000) % 60
 

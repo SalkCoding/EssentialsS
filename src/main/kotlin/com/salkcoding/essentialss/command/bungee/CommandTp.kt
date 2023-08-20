@@ -31,7 +31,6 @@ class CommandTp : CommandExecutor {
                     player.teleportAsync(targetPlayer.location)
                 } else {
                     player.sendMessage("이동되었습니다.".infoFormat())
-                    bukkitLinkedAPI.sendMessageAcrossServer(targetName, "이동되었습니다.".infoFormat())
                     bukkitLinkedAPI.teleport(player.name, targetName)
                     return true
                 }
@@ -45,14 +44,12 @@ class CommandTp : CommandExecutor {
                     //Just teleport
                     fromPlayer != null && toPlayer != null -> {
                         fromPlayer.sendMessage("이동되었습니다.".infoFormat())
-                        toPlayer.sendMessage("이동되었습니다.".infoFormat())
                         fromPlayer.teleportAsync(toPlayer.location)
                         return true
                     }
                     //Have to use bungee
                     else -> {
                         bukkitLinkedAPI.sendMessageAcrossServer(fromName, "이동되었습니다.".infoFormat())
-                        bukkitLinkedAPI.sendMessageAcrossServer(toName, "이동되었습니다.".infoFormat())
                         bukkitLinkedAPI.teleport(fromName, toName)
                     }
                 }
