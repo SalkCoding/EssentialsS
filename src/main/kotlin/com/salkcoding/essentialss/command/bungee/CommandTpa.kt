@@ -24,6 +24,7 @@ import java.util.*
 val tpaInviteMap = MetaSyncedMap<UUID, UUID>("com.salkcoding.essentialss.tpa", UUID::class.java, UUID::class.java)
 
 val taskAcceptMap: HashMap<UUID, BukkitTask> = hashMapOf()
+val removeTaskMap: HashMap<UUID, BukkitTask> = hashMapOf()
 
 class CommandTpa : CommandExecutor {
 
@@ -36,7 +37,7 @@ class CommandTpa : CommandExecutor {
 
         val lp = LuckPermsProvider.get()
         val user = lp.userManager.getUser(player.uniqueId) ?: throw IllegalStateException("User not found in luckperms")
-        val hasPermission = user.nodes.any { it.key == tpaPermissionKey && it.hasExpiry() && !it.hasExpired()}
+        val hasPermission = user.nodes.any { it.key == tpaPermissionKey && it.hasExpiry() && !it.hasExpired() }
 
         if (!sender.isOp && !hasPermission) {
             sender.sendMessage("마일리지를 사용해서 tpa권을 구매해주세요.".errorFormat())
@@ -65,7 +66,7 @@ class CommandTpa : CommandExecutor {
 
                 tpaInviteMap[targetUUID] = sender.uniqueId
 
-                Bukkit.getScheduler().runTaskLater(
+                removeTaskMap[targetUUID] = Bukkit.getScheduler().runTaskLater(
                     essentials,
                     Runnable {
                         if (targetUUID in tpaInviteMap) {
@@ -82,6 +83,7 @@ class CommandTpa : CommandExecutor {
                     targetUUID,
                     "승낙하려면 ${ChatColor.GREEN}/tpaccept${ChatColor.WHITE}, 거절하려면 ${ChatColor.RED}/tpdeny${ChatColor.WHITE}을 입력하세요."
                 )
+
                 //Teleport accept cooldown
                 taskAcceptMap[sender.uniqueId] = Bukkit.getScheduler().runTaskTimer(
                     essentials,
@@ -92,6 +94,7 @@ class CommandTpa : CommandExecutor {
                             }, false)
                             tpaInviteMap.remove(tpAcceptMap[sender.uniqueId]!!)
                             tpAcceptMap.remove(sender.uniqueId)
+                            removeTaskMap.remove(targetUUID)?.cancel()
                             taskAcceptMap.remove(sender.uniqueId)?.cancel()
                         }
                     }, 5, 5
