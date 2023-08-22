@@ -1,10 +1,10 @@
 name: EssentialsS
 main: com.salkcoding.essentialss.EssentialsS
-version: 1.1.6
+version: 1.1.7
 description: Essentials by Salk_Coding
 api-version: 1.20
 author: Salk_Coding
-depend: [ BukkitLinked, Metamorphosis ]
+depend: [ BukkitLinked, Metamorphosis, LuckPerms ]
 commands:
   kickall:
     description: kickall
