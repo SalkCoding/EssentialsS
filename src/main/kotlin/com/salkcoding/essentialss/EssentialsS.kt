@@ -40,7 +40,7 @@ class EssentialsS : JavaPlugin() {
 
         saveDefaultConfig()
         currentServerName = config.getString("serverName")!!
-        tpaLimitWorldName= config.getList("tpaLimitWorld")!!.toSet() as Set<String>
+        tpaLimitWorldName = config.getList("tpaLimitWorld")!!.toSet() as Set<String>
 
         getCommand("tpaticket")!!.setExecutor(CommandTpaTicket())
         getCommand("tpa")!!.setExecutor(CommandTpa())
@@ -79,6 +79,10 @@ class EssentialsS : JavaPlugin() {
         getCommand("xp")!!.tabCompleter = xp
 
         server.pluginManager.registerEvents(CommandList(), this)
+
+        server.pluginManager.registerEvents(CommandTpa(), this)
+        server.pluginManager.registerEvents(CommandTpAccept(), this)
+        server.pluginManager.registerEvents(CommandTpDeny(), this)
 
         logger.info("Plugin enabled")
     }

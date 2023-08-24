@@ -15,9 +15,10 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import java.util.*
 
-class CommandTpDeny : CommandExecutor {
+class CommandTpDeny : CommandExecutor, Listener {
 
     private val metaTpDenyKey = "com.salkcoding.essentialss.tpdeny"
 
@@ -42,24 +43,18 @@ class CommandTpDeny : CommandExecutor {
             return true
         }
 
-        val delta = invitorInfo.expired - System.currentTimeMillis()
-        if (delta <= 0) {
-            acceptor.sendMessage("TPA 초대가 만료되었습니다.".errorFormat())
-            tpaInviteMap.remove(acceptorUUID)
-            return true
-        }
-
         val json = JsonObject().apply {
             addProperty("invitor", invitorInfo.invitor.toString())
             addProperty("invitorServer", invitorInfo.invitorServer)
         }
         metamorphosis.send(metaTpDenyKey, json.toString())
         acceptor.sendMessage("TPA 요청을 거절하였습니다.".infoFormat())
+        tpaInviteMap.remove(acceptorUUID)
         return true
     }
 
     @EventHandler
-    fun onTpAcceptReceive(event: MetamorphosisReceiveEvent) {
+    fun onTpDenyReceive(event: MetamorphosisReceiveEvent) {
         if (metaTpDenyKey != event.key) return
 
         val json = JsonParser.parseString(event.value).asJsonObject
@@ -69,6 +64,8 @@ class CommandTpDeny : CommandExecutor {
 
         val invitorUUID = UUID.fromString(json["invitor"].asString)
         val invitor = Bukkit.getPlayer(invitorUUID) ?: return
+
+        expiredTaskMap.remove(invitorUUID)?.cancel()
 
         invitor.sendMessage("상대방이 TPA 요청을 거절하였습니다.".errorFormat())
     }

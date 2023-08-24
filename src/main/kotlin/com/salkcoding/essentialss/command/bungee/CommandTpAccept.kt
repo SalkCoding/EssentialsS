@@ -44,20 +44,14 @@ class CommandTpAccept : CommandExecutor, Listener {
             return true
         }
 
-        val delta = invitorInfo.expired - System.currentTimeMillis()
-        if (delta <= 0) {
-            acceptor.sendMessage("TPA 초대가 만료되었습니다.".errorFormat())
-            tpaInviteMap.remove(acceptorUUID)
-            return true
-        }
-
         val json = JsonObject().apply {
             addProperty("invitor", invitorInfo.invitor.toString())
             addProperty("invitorServer", invitorInfo.invitorServer)
             addProperty("acceptor", acceptorUUID.toString())
         }
         metamorphosis.send(metaTpAcceptKey, json.toString())
-        acceptor.sendMessage("요청을 승낙하여, TPA를 요청한 사람이 잠시 후, 텔레포트 됩니다.".infoFormat())
+        acceptor.sendMessage("요청을 수락하여, TPA를 요청한 사람이 잠시 후, 텔레포트 됩니다.".infoFormat())
+        tpaInviteMap.remove(acceptorUUID)
         return true
     }
 
@@ -73,6 +67,10 @@ class CommandTpAccept : CommandExecutor, Listener {
         val invitorUUID = UUID.fromString(json["invitor"].asString)
         val invitor = Bukkit.getPlayer(invitorUUID) ?: return
         val acceptorUUID = UUID.fromString(json["acceptor"].asString)
+        val acceptor = bukkitLinkedAPI.getPlayerInfo(acceptorUUID) ?: return
+        expiredTaskMap.remove(invitorUUID)?.cancel()
+
+        invitor.sendMessage("$${acceptor.playerName}님이 TPA 요청을 수락하여, 잠시 후 텔레포트 됩니다.".infoFormat())
 
         TeleportCooltime.addPlayer(invitor, null, 100, {
             bukkitLinkedAPI.teleport(invitorUUID, acceptorUUID)
@@ -80,4 +78,4 @@ class CommandTpAccept : CommandExecutor, Listener {
     }
 }
 
-data class Invitor(val invitor: UUID, val invitorServer: String, val expired: Long)
+data class Invitor(val invitor: UUID, val invitorServer: String)
